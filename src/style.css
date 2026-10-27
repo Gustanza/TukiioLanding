@@ -1,0 +1,332 @@
+/* ==========================================================================
+   Tukiio landing — design tokens & base
+   Visual system: BrightHub study (DESIGN.md), re-skinned to Tukiio yellow.
+   ========================================================================== */
+
+:root {
+  /* Canvas & surfaces */
+  --bg-page: #f6f7f8;
+  --surface: #ffffff;
+  --surface-muted: #f5f5f5;
+  --surface-glass: rgba(255, 255, 255, 0.48);
+  --tray: rgba(255, 255, 255, 0.5);
+
+  /* Ink & text (monochrome) */
+  --ink: #0b0b0b;
+  --ink-strong: #181d27;
+  --text: #535862;
+  --text-muted: #5e5e5e;
+  --border: #efefef;
+  --border-strong: #d5d7da;
+  --placeholder: #c9c9c9;
+  --text-strong: #2c2f36; /* lead copy on glass */
+  --ink-soft: #2a2a2a; /* text wordmarks */
+  --ink-hover: #1e1e1e; /* hover on ink surfaces */
+  --surface-hover: #e6e6e6; /* hover on muted slabs */
+  --bracket: #b5b5b5; /* crop-mark brackets */
+  --hairline-fade: #bbbbbb;
+
+  /* Tukiio accent: the one colour. Never use as text on light surfaces. */
+  --accent: #ffc50b;
+  --accent-soft: #ffe27a;
+  --accent-deep: #ffa800;
+  --accent-line: #e8a800; /* chart strokes (decorative) */
+  --accent-tint: #fff6d6;
+  --accent-wash: #fffbef;
+  --brand-gradient: linear-gradient(90deg, #ffe27a 0%, #ffc50b 50%, #ffa800 100%);
+  --brand-gradient-diag: linear-gradient(135deg, #ffe27a 0%, #ffc50b 50%, #ffa800 100%);
+
+  /* Ambient glows */
+  --glow-amber: #ffc50b;
+  --glow-peach: #ffd2a8;
+  --glow-cream: #fff1b8;
+
+  /* Status */
+  --online: #16a34a;
+
+  /* Type */
+  --font-display: 'Geist', 'Inter', system-ui, sans-serif;
+  --font-ui: 'Inter', system-ui, sans-serif;
+
+  /* Radii */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 20px;
+  --r-2xl: 24px;
+  --r-3xl: 36px;
+  --r-4xl: 40px;
+  --r-pill: 999px;
+
+  /* Elevation */
+  --shadow-hairline: 0 1px 1px -0.5px rgba(0, 0, 0, 0.04), 0 3px 3px -1.5px rgba(0, 0, 0, 0.04),
+    0 24px 24px -12px rgba(0, 0, 0, 0.04);
+  --shadow-float: 8px 24px 80px -10px rgba(40, 32, 10, 0.14);
+  --shadow-pill: 0 1px 10px 0 rgba(0, 0, 0, 0.06);
+
+  /* Layout */
+  --container: 1312px;
+  --container-narrow: 1096px;
+  --gutter: 24px;
+  --section-gap: clamp(96px, 11vw, 160px);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 110px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--bg-page);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+@supports (overflow: clip) {
+  body {
+    overflow-x: clip;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  font-weight: 500;
+}
+
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+  padding: 0;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--ink);
+}
+
+/* ---------- Layout helpers ---------- */
+.container {
+  width: 100%;
+  max-width: calc(var(--container) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.container--narrow {
+  max-width: calc(var(--container-narrow) + var(--gutter) * 2);
+}
+
+.section {
+  padding-block: calc(var(--section-gap) / 2);
+}
+
+.section-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+  max-width: 760px;
+  margin: 0 auto 56px;
+}
+
+.section-head--left {
+  align-items: flex-start;
+  text-align: left;
+  margin-inline: 0;
+}
+
+.section-title {
+  font-size: clamp(32px, 4.4vw, 48px);
+  line-height: 1.2;
+  font-weight: 400;
+  letter-spacing: -0.06em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.section-sub {
+  font-family: var(--font-display);
+  font-size: clamp(16px, 1.4vw, 18px);
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+  color: var(--text-muted);
+  max-width: 600px;
+  text-wrap: pretty;
+}
+
+/* Visually hidden, still announced */
+.sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -100px;
+  z-index: 1000;
+  background: var(--ink);
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: var(--r-md);
+  font-weight: 500;
+}
+
+.skip-link:focus {
+  top: 16px;
+}
+
+/* ---------- Shared surfaces ---------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-hairline);
+}
+
+.glass {
+  background: var(--surface-glass);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border: 2px solid #fff;
+  border-radius: var(--r-4xl);
+}
+
+/* The "card in a slot" tray */
+.tray {
+  padding: 10px;
+  border-radius: calc(var(--r-3xl) + 10px);
+  background: var(--tray);
+  border: 1px solid rgba(0, 0, 0, 0.035);
+}
+
+/* Ambient blurred glows */
+.glow {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(200px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ---------- Scroll reveal (driven by v-reveal) ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.8s var(--ease-out),
+    transform 0.8s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Reduced motion: everything calm and static ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --gutter: 16px;
+  }
+
+  .section-head {
+    margin-bottom: 40px;
+  }
+}

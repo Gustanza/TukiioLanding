@@ -1,0 +1,326 @@
+[
+  {
+    "url": "https://tukiio.com/experience/20percent",
+    "type": "experience",
+    "venue": "THE SUPER DOME TZ",
+    "status": "upcoming",
+    "title": "Bongo Flava Honors S04 ft 20 Percent",
+    "cta": "Buy Ticket (50,000 - 500,000 TZS)",
+    "price_min_tzs": 50000,
+    "price_max_tzs": 500000
+  },
+  {
+    "url": "https://tukiio.com/experience/otaku-night-halloween-edition",
+    "type": "experience",
+    "venue": "Bahari Japan Restaurant, dar es salaam, tanzania.",
+    "status": "upcoming",
+    "title": "Otaku Night - Halloween Edition",
+    "cta": "Buy Ticket (30,000 - 55,000 TZS)",
+    "price_min_tzs": 30000,
+    "price_max_tzs": 55000
+  },
+  {
+    "url": "https://tukiio.com/experience/women-in-energy-forum",
+    "type": "experience",
+    "venue": "New Library (UDSM), dar es salaam, tanzania.",
+    "status": "upcoming",
+    "title": "WOMEN IN ENERGY FORUM",
+    "cta": "Buy Ticket (100,000 TZS)",
+    "price_min_tzs": 100000,
+    "price_max_tzs": 100000
+  },
+  {
+    "url": "https://tukiio.com/experience/season4",
+    "type": "experience",
+    "venue": "JULIUS NYERERE INTERNATIONAL CONVECTION CENTRE (JNICC), dar es salaam, tanzania.",
+    "status": "upcoming",
+    "title": "TANZANIA BUSINESS FORUM SEASON 4",
+    "cta": "Buy Ticket (75,000 - 150,000 TZS)",
+    "price_min_tzs": 75000,
+    "price_max_tzs": 150000
+  },
+  {
+    "url": "https://tukiio.com/experience/swkc-reloaded-tanzanite-festival",
+    "type": "experience",
+    "venue": "Alliance Français, dar es salaam, tanzania.",
+    "status": "upcoming",
+    "title": "SWKC reloaded ft Tanzanite festival",
+    "cta": "Buy Ticket (5,000 - 20,000 TZS)",
+    "price_min_tzs": 5000,
+    "price_max_tzs": 20000
+  },
+  {
+    "url": "https://tukiio.com/experience/africhina-capital-connect",
+    "type": "experience",
+    "venue": "Julius Nyerere International Convention Centre (JNICC)",
+    "status": "upcoming",
+    "title": "Africhina Capital Connect",
+    "cta": "Event Detail"
+  },
+  {
+    "url": "https://tukiio.com/experience/skillsprint",
+    "type": "experience",
+    "venue": "Hyatt Regency Dar es Salaam, The Kilimanjaro",
+    "status": "upcoming",
+    "title": "Skill Sprint By The Impact Lab",
+    "cta": "Buy Ticket (250,000 TZS)",
+    "price_min_tzs": 250000,
+    "price_max_tzs": 250000
+  },
+  {
+    "url": "https://tukiio.com/experience/ucc-utamaduni-day",
+    "type": "experience",
+    "venue": "UDSM CAMPUS 1 GROUNDS, dar es salaam, tanzania.",
+    "status": "upcoming",
+    "title": "UCC UTAMADUNI DAY",
+    "cta": "Register"
+  },
+  {
+    "url": "https://tukiio.com/marathon/bhr",
+    "type": "marathon",
+    "venue": "Old German Boma, Bagamoyo, Pwani",
+    "status": "upcoming",
+    "title": "BAGAMOYO HERITAGE RUN",
+    "cta": "Register"
+  },
+  {
+    "url": "https://tukiio.com/experience/raising-a-purpose-driven-generation-young-visionary-ages-1019",
+    "type": "experience",
+    "venue": "Mamiwata,Coco Beach , Dar es salaam, dar es salaam, tanzania.",
+    "status": "upcoming",
+    "title": "Raising a Purpose-Driven Generation {Young Visionary} (Ages 10–19)",
+    "cta": "Register"
+  },
+  {
+    "url": "https://tukiio.com/event/csad",
+    "type": "event",
+    "venue": "Serena Hotel, Dar es Salaam",
+    "status": "upcoming",
+    "title": "Customer Service Agents Dinner",
+    "cta": "Buy Ticket (850,000 - 20,000,000 TZS)",
+    "price_min_tzs": 850000,
+    "price_max_tzs": 20000000
+  },
+  {
+    "url": "https://tukiio.com/experience/road-to-kili",
+    "type": "experience",
+    "venue": "Panone Gardens, Moshi",
+    "status": "upcoming",
+    "title": "Road to Kili",
+    "cta": "Buy Ticket (25,000 - 112,500 TZS)",
+    "price_min_tzs": 25000,
+    "price_max_tzs": 112500
+  },
+  {
+    "url": "https://tukiio.com/experience/easw",
+    "type": "experience",
+    "venue": "BLISS RESORT, MOMBASA",
+    "status": "upcoming",
+    "title": "EAST AFRICAN SUCCESS WEEKEND",
+    "cta": "Buy Ticket (50,000 TZS)",
+    "price_min_tzs": 50000,
+    "price_max_tzs": 50000
+  },
+  {
+    "url": "https://tukiio.com/event/run-4-autism-tanzania-half-marathon-2027",
+    "type": "event",
+    "venue": "The Oysterbay Primary School Grounds, dar es salaam, tanzania.",
+    "status": "upcoming",
+    "title": "Run 4 Autism  Tanzania Half Marathon 2027",
+    "cta": "Buy Ticket (35,000 TZS)",
+    "price_min_tzs": 35000,
+    "price_max_tzs": 35000
+  },
+  {
+    "url": "https://tukiio.com/experience/abel-memorial-pre-and-primary-school-carrier-day",
+    "type": "experience",
+    "venue": "ABEL MEMORIAL PRE AND PRIMARY SCHOOL  BUNJU MIANZINI, tanzania.",
+    "status": "past",
+    "title": "ABEL MEMORIAL PRE AND PRIMARY SCHOOL  CARRIER DAY",
+    "cta": "Event Detail"
+  },
+  {
+    "url": "https://tukiio.com/experience/pathways-to-wealth-and-financial-freedom",
+    "type": "experience",
+    "venue": "UDSM, New Library",
+    "status": "past",
+    "title": "LET'S TALK FINANCE: Pathways to Wealth and Financial Freedom",
+    "cta": "Event Detail"
+  },
+  {
+    "url": "https://tukiio.com/experience/sw2026",
+    "type": "experience",
+    "venue": "JNICC, dar es salaam, tanzania.",
+    "status": "past",
+    "title": "Startup Week 2026",
+    "cta": "Event Detail"
+  },
+  {
+    "url": "https://tukiio.com/experience/mlt",
+    "type": "experience",
+    "venue": "CRDB Bank - Azikiwe Branch",
+    "status": "past",
+    "title": "Mindful Leadership Training",
+    "cta": "Event Detail"
+  },
+  {
+    "url": "https://tukiio.com/experience/execvisit",
+    "type": "experience",
+    "venue": "Hyatt Regency, The Kilimanjaro",
+    "status": "past",
+    "title": "Executive Visit",
+    "cta": "Event Detail"
+  },
+  {
+    "url": "https://tukiio.com/experience/lady-jaydee-ft-kidum",
+    "type": "experience",
+    "venue": "The Bridge Mwanza",
+    "status": "past",
+    "title": "Lady Jaydee ft Kidum",
+    "cta": "Event Detail"
+  },
+  {
+    "url": "https://tukiio.com/form/saharasparks2026",
+    "type": "form",
+    "venue": "Golden Tulip Airport Zanzibar, zanzibar west, tanzania.",
+    "status": "past",
+    "title": "Sahara Sparks 2026",
+    "cta": "Event Detail"
+  },
+  {
+    "url": "https://tukiio.com/experience/simbasc-marathon",
+    "type": "experience",
+    "venue": "Coco Beach, dar es salaam, tanzania.",
+    "status": "past",
+    "title": "Simba Sports Club Marathon",
+    "cta": "Event Detail"
+  },
+  {
+    "url": "https://tukiio.com/experience/festival",
+    "type": "experience",
+    "venue": "Courage Cafe, Moshi",
+    "status": "past",
+    "title": "Kili Country Fest - All roads lead to kili",
+    "cta": "Event Detail"
+  },
+  {
+    "url": "https://tukiio.com/form/mhlaudition",
+    "type": "form",
+    "venue": "",
+    "status": "past",
+    "title": "MISS HIGHER LEARNING TANZANIA - REGISTRATION FORM",
+    "cta": "Event Detail"
+  },
+  {
+    "url": "https://tukiio.com/experience/music-therapy",
+    "type": "experience",
+    "venue": "New Library, University of Dar es Salaam, dar es salaam, tanzania.",
+    "status": "past",
+    "title": "Music Therapy",
+    "cta": "Event Detail"
+  },
+  {
+    "url": "https://tukiio.com/experience/4th-public-health-palliative-care-scientific-congress",
+    "type": "experience",
+    "venue": "New Library, University of Dar es Salaam, dar es salaam, tanzania.",
+    "status": "past",
+    "title": "4th Public Health Palliative Care Scientific Congress",
+    "cta": "Event Detail"
+  },
+  {
+    "url": "https://tukiio.com/experience/tech-ai-expo-26",
+    "type": "experience",
+    "venue": "Golden Tulip Airport Hotel, tanzania.",
+    "status": "past",
+    "title": "Tech & AI International Expo 2026",
+    "cta": "Event Detail"
+  },
+  {
+    "url": "https://tukiio.com/experience/sucessday2026",
+    "type": "experience",
+    "venue": "Ocean View Arena",
+    "status": "past",
+    "title": "Success Day 2026",
+    "cta": "Event Detail"
+  },
+  {
+    "url": "https://tukiio.com/experience/2yrs",
+    "type": "experience",
+    "venue": "Amell in Dar at PSSSF Tower, 5th Floor",
+    "status": "past",
+    "title": "Amell in Dar 2 years Anniversary",
+    "cta": "Event Detail"
+  },
+  {
+    "url": "https://tukiio.com/experience/supervisors-summit",
+    "type": "experience",
+    "venue": "LAPF Millennium Towers 1st Floor, Makumbusho, dar es salaam, tanzania.",
+    "status": "past",
+    "title": "Supervisors Summit",
+    "cta": "Event Detail"
+  },
+  {
+    "url": "https://tukiio.com/experience/wikiendilive",
+    "type": "experience",
+    "venue": "NAFASI ART SPACE",
+    "status": "past",
+    "title": "WIKIENDI LIVE",
+    "cta": "Event Detail"
+  },
+  {
+    "url": "https://tukiio.com/experience/coding-challenge",
+    "type": "experience",
+    "venue": "",
+    "status": "past",
+    "title": "Coding Challenge",
+    "cta": "Event Detail"
+  },
+  {
+    "url": "https://tukiio.com/experience/otaku-night",
+    "type": "experience",
+    "venue": "Bahari Japan Restaurant, dar es salaam, tanzania.",
+    "status": "past",
+    "title": "Otaku Night",
+    "cta": "Event Detail"
+  },
+  {
+    "url": "https://tukiio.com/experience/fcw",
+    "type": "experience",
+    "venue": "Bravo Coco Beach, dar es salaam, tanzania.",
+    "status": "past",
+    "title": "AMCHAM FAMILY CHARITY WALK",
+    "cta": "Event Detail"
+  },
+  {
+    "url": "https://tukiio.com/experience/summit2026",
+    "type": "experience",
+    "venue": "Julius Nyerere International Convention Centre (JNICC), dar es salaam, tanzania.",
+    "status": "past",
+    "title": "4TH ANNUAL REHABILITATION SUMMIT 2026",
+    "cta": "Event Detail"
+  },
+  {
+    "url": "https://tukiio.com/experience/aec",
+    "type": "experience",
+    "venue": "JNICC, dar es salaam, tanzania.",
+    "status": "past",
+    "title": "12th UNESCO Africa Engineering Week & 10th African Engineering Conference",
+    "cta": "Event Detail"
+  },
+  {
+    "url": "https://tukiio.com/experience/tedxkivukoni",
+    "type": "experience",
+    "venue": "Julius Nyerere International Convention Centre, Dar es Salaam, dar es salaam, tanzania.",
+    "status": "past",
+    "title": "Tedx Kivukoni",
+    "cta": "Event Detail"
+  },
+  {
+    "url": "https://tukiio.com/experience/atownlive",
+    "type": "experience",
+    "venue": "Alliance Francaise Arusha, arusha, tanzania.",
+    "status": "past",
+    "title": "Captain Khalid's ''Work In Progress” : Arusha",
+    "cta": "Event Detail"
+  }
+]
