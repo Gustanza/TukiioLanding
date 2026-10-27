@@ -315,3 +315,51 @@ Short, benefit-led, ecommerce-specific. Headline formula: **"[Verb] [Outcome] & 
 ## Part 3 — Combined direction
 
 *To be written once Part 2 is analyzed.*
+
+---
+
+## Part 4 — Tukiio implementation notes: liquid glass
+
+The reference hero reads as a thick sheet of frosted glass with colour glowing through it. Tukiio keeps its own palette: warm yellow, amber and cream glows, plus one faint cool sky tint (`--glow-sky: #A9E4FF`, at about .25, only in the hero and CTA glow fields) so the frost has some contrast to refract. Small glow pools (stats, pricing) are warm only, because the sky stop turned the yellow muddy teal there. Yellow stays dominant.
+
+### 4.1 Tokens (`src/style.css`)
+
+| Token | Value | Use |
+|---|---|---|
+| `--glass-bg` | `rgba(255,255,255,.44)` | big sheets (hero / CTA shell, dashboard stage) |
+| `--glass-bg-thick` | `rgba(255,255,255,.64)` | default for small glass that carries text |
+| `--glass-fallback` | `rgba(255,255,255,.9)` | used when `backdrop-filter` is unsupported |
+| `--glass-blur` / `--glass-saturate` | `20px` / `180%` | backdrop frost and colour lift |
+| `--glass-border` | `rgba(255,255,255,.55)` | 1px inset hairline (in `--glass-highlight`) |
+| `--glass-rim` / `--glass-rim-width` | 135° white gradient, 1.5px (2px on sheets) | specular rim: bright top-left, faint middle, soft bottom-right |
+| `--glass-sheen` | 150° white→transparent→white gradient | the faint diagonal highlight on the surface |
+| `--glass-highlight` | `inset 0 1px 0 #fff(.95), inset 0 -1px 0 #fff(.25), inset 0 0 0 1px var(--glass-border)` | lit top edge, soft bottom edge, hairline |
+| `--glass-shadow` | `0 1px 2px …/.04, 0 18px 48px -18px …/.16` | soft lift |
+
+You can tune each instance with `--glass-fill` (a colour or a gradient list ending in a colour), `--glass-shadow`, `--glass-rim`, `--glass-blur` and `--glass-fallback`.
+
+### 4.2 Recipe
+
+1. **Fill:** `background: var(--glass-sheen), var(--glass-fill)`.
+2. **Frost:** `backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate))`. Sheets use `saturate()` **only**. The only thing behind them is the 200px-blurred glows, so a second blur measured about 2/255 mean pixel difference while costing a full-viewport pass on every scroll frame.
+3. **Specular rim:** a `::before` with `inset: 0; padding: <rim width>; background: var(--glass-rim)`, masked to a ring with `mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite: exclude`. The rule is written both prefixed (`-webkit-mask` and `-webkit-mask-composite: xor`) and unprefixed. This only applies inside `@supports` for mask-composite.
+4. **Inner light:** inset highlights from `--glass-highlight`. Sheets add a soft `inset 0 0 80px #fff(.3)` luminance and a 2px lit top edge.
+5. **Colour behind:** glass over a flat background reads as grey. Hero and CTA glows sit in an `.ambient` layer **behind** the shell (`z-index: -1`, clipped, mask-faded at the edges). They bleed past the shell and under the header. Smaller glass gets its own glow pool: the stats card has radial blobs and a faded brand lip, and the featured plan has radial pools on its tray.
+6. **Pointer light (sheets only):** a `.glass-light` first child (an 800px element holding a 640px radial white pool at .42) rests at 26% / 0 of the sheet. Once per rAF, `useGlassPointer()` reads the sheet's rect and writes `transform: translate3d()` on that child. Because only the transform changes, the motion is compositor-only and nothing is repainted. A 0.7s transform transition lets it glide, and on `pointerleave` it returns to rest. It only runs for `(hover: hover) and (pointer: fine)` and stays off under reduced motion.
+
+Classes: `.glass` (base), `.glass--sheet` (40px radius, 2px rim, inner luminance, saturate-only backdrop), `.glass-light` (sheet light pool), `.glass--static` (same look, no `backdrop-filter`), and `.glass--tint` (opts out of the white fallback for coloured glass).
+
+### 4.3 Where it is used
+
+- **Glass with backdrop blur:** header bar (fill .62, rising to .76 once scrolled or when the menu is open), mobile menu (.82; its content scrolls in an inner `.mobile__scroll`, so the rim stays on the panel edge), stats middle card (.72) and featured plan card (.70).
+- **Saturate-only backdrop:** hero shell and CTA shell.
+- **Painted glass, no backdrop blur:** the floating bubbles (.70) and icon tiles inside sheets, where a nested blur inside a backdrop root adds GPU cost with no visible change. Also eyebrow pills (.66), because `v-reveal` animates them and they sit over the flat page background, so there is nothing to frost. The back-to-top button (smoked ink glass `rgba(11,11,11,.8)` with a yellow halo) is painted too, because it fades and slides in. So is the dashboard stage, which scales on scroll, and the highlight pill, whose fill is effectively opaque. Icon tiles are milky glass blocks with a yellow caustic. Their ticket and QR glyphs are translucent yellow glass with a specular cap.
+- **Kept solid white for contrast:** feature trays and cards, plain plans, the FAQ, the footer and the other stat cards.
+
+### 4.4 Guard rails
+
+- **Contrast:** a glass surface that carries text has a fill of at least .62. The worst case is muted copy `#5E5E5E` on a bubble over the brightest amber glow (about `#FEF8E1` behind it), which gives roughly 6:1. Body copy on the hero sheet stays at or above roughly 5.5:1.
+- **Fallback:** `@supports not (backdrop-filter)` sets `background-color: var(--glass-fallback)` (`!important`), which is near-opaque white, or ink for back-to-top.
+- **Performance:** the only full-size backdrop filter is a cheap `saturate()` on the sheets. Blurred backdrops are limited to the header, the mobile menu, the stats card and the featured plan card, and usually only 1–2 of them are on screen at once. No element that animates (reveal, bob, fade or scale) has a backdrop filter. Glows don't drift, because a moving backdrop would re-filter the sheet every frame.
+- **Motion:** the only new motion is the pointer light, which is a transform on its own layer. It is JS-gated, and its transition is cancelled by the global reduced-motion rule.
+- **Not used:** SVG `feDisplacementMap` refraction. It works only in Chromium, and over a backdrop that is already blurred 200px it added cost without a visible gain.

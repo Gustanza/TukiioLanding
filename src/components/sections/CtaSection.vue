@@ -6,13 +6,23 @@ import SecondaryLink from '../ui/SecondaryLink.vue'
 import BracketFrame from '../ui/BracketFrame.vue'
 import FloatBubble from '../ui/FloatBubble.vue'
 import { contact, links, telHref } from '../../data/site.js'
+import { ref } from 'vue'
+import { useGlassPointer } from '../../composables/motion.js'
+
+const shell = ref(null)
+useGlassPointer(shell)
 </script>
 
 <template>
   <section id="contact" class="cta" aria-labelledby="cta-title">
-    <div class="shell glass">
-      <span class="glow glow--a" aria-hidden="true" />
-      <span class="glow glow--b" aria-hidden="true" />
+    <div class="ambient" aria-hidden="true">
+      <span class="glow glow--a" />
+      <span class="glow glow--b" />
+      <span class="glow glow--c" />
+    </div>
+
+    <div ref="shell" class="shell glass glass--sheet">
+      <span class="glass-light" aria-hidden="true" />
 
       <div class="floats" aria-hidden="true">
         <BracketFrame class="f f--1" delay="-1s">
@@ -41,7 +51,20 @@ import { contact, links, telHref } from '../../data/site.js'
 
 <style scoped>
 .cta {
+  position: relative;
+  isolation: isolate;
   padding: calc(var(--section-gap) / 2) var(--gutter) 24px;
+}
+
+/* glow field behind the glass sheet, clipped to the section */
+.ambient {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(transparent, #000 120px, #000 calc(100% - 80px), transparent);
+  mask-image: linear-gradient(transparent, #000 120px, #000 calc(100% - 80px), transparent);
 }
 
 .shell {
@@ -50,26 +73,34 @@ import { contact, links, telHref } from '../../data/site.js'
   margin: 0 auto;
   padding: 134px 24px;
   overflow: hidden;
-  isolation: isolate;
 }
 
 .glow--a {
-  width: 520px;
-  height: 700px;
-  top: -260px;
+  width: 560px;
+  height: 760px;
+  top: -120px;
   left: 8%;
   background: var(--glow-amber);
-  opacity: 0.4;
+  opacity: 0.6;
   transform: rotate(30deg);
 }
 
 .glow--b {
-  width: 520px;
-  height: 420px;
-  bottom: -200px;
+  width: 560px;
+  height: 460px;
+  bottom: -160px;
   right: 6%;
   background: var(--glow-peach);
-  opacity: 0.75;
+  opacity: 0.9;
+}
+
+.glow--c {
+  width: 380px;
+  height: 340px;
+  top: 30%;
+  right: 30%;
+  background: var(--glow-sky);
+  opacity: 0.25;
 }
 
 .floats {

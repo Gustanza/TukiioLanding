@@ -3,7 +3,7 @@ import AppIcon from './AppIcon.vue'
 </script>
 
 <template>
-  <p class="eyebrow">
+  <p class="eyebrow glass glass--static">
     <span class="eyebrow__spark"><AppIcon name="sparkle" :size="14" /></span>
     <span><slot /></span>
   </p>
@@ -15,10 +15,9 @@ import AppIcon from './AppIcon.vue'
   align-items: center;
   gap: 8px;
   padding: 7px 16px 7px 12px;
-  background: var(--surface);
-  border: 1px solid var(--border);
+  --glass-fill: rgba(255, 255, 255, 0.66);
+  --glass-shadow: var(--shadow-hairline), 0 6px 18px -8px rgba(40, 32, 10, 0.14);
   border-radius: 50px;
-  box-shadow: var(--shadow-hairline);
   font-family: var(--font-display);
   font-size: 14px;
   font-weight: 500;

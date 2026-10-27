@@ -58,7 +58,7 @@ onBeforeUnmount(() => {
 
 <template>
   <header ref="header" class="header" :class="{ 'is-scrolled': scrolled, 'is-open': open }" @focusout="onFocusOut">
-    <div class="bar">
+    <div class="bar glass">
       <a href="#top" class="brand" aria-label="Tukiio home">
         <TukiioLogo :height="24" />
       </a>
@@ -88,7 +88,9 @@ onBeforeUnmount(() => {
       </div>
     </div>
 
-    <div id="mobile-menu" ref="panel" class="mobile" :hidden="!open">
+    <div id="mobile-menu" ref="panel" class="mobile glass" :hidden="!open">
+      <!-- inner scroller: keeps the glass rim (::before) pinned to the panel edge -->
+      <div class="mobile__scroll">
       <nav aria-label="Mobile">
         <ul role="list" class="mobile__list">
           <li v-for="item in nav" :key="item.href">
@@ -102,6 +104,7 @@ onBeforeUnmount(() => {
       <div class="mobile__actions">
         <a :href="links.login" class="mobile__login">Log in</a>
         <PrimaryButton :href="links.createEvent" icon="plus" block>Create event</PrimaryButton>
+      </div>
       </div>
     </div>
   </header>
@@ -125,17 +128,24 @@ onBeforeUnmount(() => {
   gap: 24px;
   min-height: 64px;
   padding: 0 8px 0 24px;
-  background: var(--surface);
-  border: 1px solid var(--border);
+  /* floating glass pill; thicker once content scrolls under it (nav stays AA) */
+  --glass-fill: rgba(255, 255, 255, 0.62);
+  --glass-blur: 22px;
+  --glass-rim-width: 1.5px;
   border-radius: var(--r-xl);
-  box-shadow: var(--shadow-hairline);
+  box-shadow:
+    var(--glass-highlight),
+    var(--shadow-hairline);
   transition: box-shadow 0.3s var(--ease-out);
 }
 
-.is-scrolled .bar {
+.is-scrolled .bar,
+.is-open .bar {
+  --glass-fill: rgba(255, 255, 255, 0.76);
   box-shadow:
+    var(--glass-highlight),
     var(--shadow-hairline),
-    0 12px 40px -16px rgba(0, 0, 0, 0.12);
+    0 12px 40px -16px rgba(0, 0, 0, 0.14);
 }
 
 .brand {
@@ -203,21 +213,30 @@ onBeforeUnmount(() => {
   width: 46px;
   height: 46px;
   margin-bottom: 6px;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.8);
   border-radius: var(--r-md);
-  background: var(--surface-muted);
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 1px 2px rgba(40, 32, 10, 0.06);
   color: var(--ink);
 }
 
 .mobile {
   margin-top: 8px;
-  padding: 12px;
-  background: var(--surface);
-  border: 1px solid var(--border);
+  --glass-fill: rgba(255, 255, 255, 0.82);
+  --glass-blur: 24px;
   border-radius: var(--r-xl);
-  box-shadow: var(--shadow-float);
+  box-shadow:
+    var(--glass-highlight),
+    var(--shadow-float);
+}
+
+.mobile__scroll {
+  padding: 12px;
   max-height: calc(100dvh - 120px);
   overflow-y: auto;
+  border-radius: inherit;
 }
 
 .mobile[hidden] {
@@ -238,11 +257,11 @@ onBeforeUnmount(() => {
 }
 
 .mobile__link:hover {
-  background: var(--surface-muted);
+  background: rgba(255, 255, 255, 0.7);
 }
 
 .mobile__list li + li {
-  border-top: 1px solid var(--border);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .mobile__actions {
@@ -258,6 +277,7 @@ onBeforeUnmount(() => {
   color: var(--ink);
   border: 1px solid var(--border-strong);
   border-radius: var(--r-md);
+  background: rgba(255, 255, 255, 0.6);
 }
 
 @media (max-width: 991px) {

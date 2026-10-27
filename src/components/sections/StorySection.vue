@@ -50,10 +50,11 @@ const zoomStyle = computed(() => ({
     </div>
 
     <div ref="zoomEl" class="zoom-wrap container">
-      <div class="zoom glass" :style="zoomStyle">
+      <div class="zoom glass glass--sheet glass--static" :style="zoomStyle">
+        <span class="glass-light" aria-hidden="true" />
         <span class="glow glow--z1" aria-hidden="true" />
         <span class="glow glow--z2" aria-hidden="true" />
-        <div class="frame">
+        <div class="frame glass glass--tint">
           <DashboardMock />
         </div>
       </div>
@@ -133,7 +134,7 @@ const zoomStyle = computed(() => ({
   top: -200px;
   left: -120px;
   background: var(--glow-amber);
-  opacity: 0.35;
+  opacity: 0.45;
 }
 
 .glow--z2 {
@@ -145,14 +146,20 @@ const zoomStyle = computed(() => ({
   opacity: 0.6;
 }
 
-/* the gradient frame: outer 36px radius, inner 30px, 6px of yellow showing */
+/* the yellow-glass bezel: outer 36px radius, inner 30px, 6px of glossy yellow showing.
+   No backdrop-filter here: the zoom scales on scroll, so the frost is painted, not sampled. */
 .frame {
-  position: relative;
   z-index: 1;
   padding: 6px;
   border-radius: var(--r-3xl);
-  background: var(--brand-gradient-diag);
-  box-shadow: var(--shadow-float);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.08) 18%, rgba(255, 255, 255, 0) 40%),
+    linear-gradient(135deg, rgba(255, 226, 122, 0.9) 0%, rgba(255, 197, 11, 0.82) 50%, rgba(255, 168, 0, 0.9) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.4),
+    inset 0 -2px 4px rgba(196, 120, 0, 0.25),
+    var(--shadow-float);
 }
 
 @media (max-width: 767px) {

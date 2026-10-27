@@ -66,7 +66,7 @@ const plans = [
 
       <ul class="plans" role="list">
         <li v-for="(p, i) in plans" :key="p.name" v-reveal="i * 100" class="plan" :class="{ 'plan--featured': p.featured }">
-          <div class="plan__card">
+          <div class="plan__card" :class="{ glass: p.featured }">
             <div class="plan__head">
               <h3 class="plan__name">{{ p.name }}</h3>
               <span v-if="p.tag" class="plan__badge">{{ p.tag }}</span>
@@ -127,10 +127,26 @@ const plans = [
   margin: -1px -1px 0;
 }
 
+/* featured plan: a glass card floating over its own warm glow pool */
+.plan--featured {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(120% 60% at 85% 8%, rgba(255, 197, 11, 0.55), transparent 70%),
+    radial-gradient(100% 60% at 50% 90%, rgba(255, 226, 122, 0.6), transparent 70%),
+    var(--surface-muted);
+}
+
 .plan--featured .plan__card {
+  --glass-fill: rgba(255, 255, 255, 0.7);
+  --glass-rim-width: 2px;
+  background: var(--glass-sheen), var(--glass-fill);
+  border-color: transparent;
   box-shadow:
-    var(--shadow-float),
-    inset 0 6px 0 0 var(--accent);
+    var(--glass-highlight),
+    inset 0 6px 0 0 var(--accent),
+    inset 0 0 40px rgba(255, 255, 255, 0.35),
+    var(--shadow-float);
 }
 
 .plan__head {

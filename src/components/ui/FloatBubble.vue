@@ -11,7 +11,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="bubble" :class="`bubble--${tail}`">
+  <div class="bubble glass" :class="`bubble--${tail}`">
     <span v-if="emoji" class="bubble__emoji" aria-hidden="true">{{ emoji }}</span>
     <span class="bubble__body">
       <span class="bubble__title">{{ title }}</span>
@@ -29,10 +29,14 @@ defineProps({
   gap: 10px;
   max-width: 290px;
   padding: 14px 20px 14px 14px;
-  background: var(--surface);
+  /* text-bearing glass: thick enough fill for AA over the brightest glow */
+  --glass-fill: rgba(255, 255, 255, 0.7);
+  --glass-shadow: var(--shadow-float);
   border-radius: 16px 16px 0 16px;
-  box-shadow: var(--shadow-float);
-  border: 1px solid var(--border);
+  box-shadow:
+    var(--glass-highlight),
+    inset 0 -8px 16px -12px rgba(255, 255, 255, 0.8),
+    var(--shadow-float);
   text-align: left;
 }
 
@@ -77,9 +81,12 @@ defineProps({
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-pill);
+  z-index: 4; /* above the bubble's specular rim */
+  background: radial-gradient(circle at 35% 25%, #fff 0%, rgba(255, 255, 255, 0.85) 60%, rgba(255, 246, 214, 0.9) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow:
+    inset 0 -2px 4px rgba(255, 197, 11, 0.18),
+    var(--shadow-pill);
 }
 
 .bubble--bl .bubble__avatar {

@@ -9,7 +9,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
 </script>
 
 <template>
-  <a href="#top" class="btt" :class="{ 'is-shown': show }" :tabindex="show ? 0 : -1" :aria-hidden="show ? undefined : 'true'">
+  <a href="#top" class="btt glass glass--static" :class="{ 'is-shown': show }" :tabindex="show ? 0 : -1" :aria-hidden="show ? undefined : 'true'">
     <AppIcon name="arrowUp" :size="18" :stroke="2" />
     <span class="sr-only">Back to top</span>
   </a>
@@ -26,9 +26,17 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: var(--ink);
+  /* smoked ink glass with a yellow halo (painted, no backdrop blur: it fades/slides in);
+     white arrow stays well above AA */
+  --glass-fill: rgba(11, 11, 11, 0.8);
+  --glass-fallback: var(--ink);
+  --glass-rim: linear-gradient(150deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.05) 50%, rgba(255, 226, 122, 0.5));
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 55%),
+    var(--glass-fill);
   color: #fff;
   box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
     0 0 0 4px rgba(255, 197, 11, 0.35),
     var(--shadow-float);
   opacity: 0;
@@ -46,6 +54,6 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
 }
 
 .btt:hover {
-  background: var(--ink-hover);
+  --glass-fill: rgba(30, 30, 30, 0.9);
 }
 </style>

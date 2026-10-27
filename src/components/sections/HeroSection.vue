@@ -7,14 +7,26 @@ import BracketFrame from '../ui/BracketFrame.vue'
 import FloatBubble from '../ui/FloatBubble.vue'
 import AppIcon from '../ui/AppIcon.vue'
 import { links } from '../../data/site.js'
+import { ref } from 'vue'
+import { useGlassPointer } from '../../composables/motion.js'
+
+const shell = ref(null)
+useGlassPointer(shell)
 </script>
 
 <template>
   <section id="top" class="hero" aria-labelledby="hero-title">
-    <div class="shell glass">
-      <span class="glow glow--a" aria-hidden="true" />
-      <span class="glow glow--b" aria-hidden="true" />
-      <span class="glow glow--c" aria-hidden="true" />
+    <!-- Colour lives BEHIND the glass so the sheet frosts it; it also bleeds past the
+         shell edges and under the floating header, like the reference. -->
+    <div class="ambient" aria-hidden="true">
+      <span class="glow glow--a" />
+      <span class="glow glow--b" />
+      <span class="glow glow--c" />
+      <span class="glow glow--d" />
+    </div>
+
+    <div ref="shell" class="shell glass glass--sheet">
+      <span class="glass-light" aria-hidden="true" />
 
       <!-- Floating, bracket-framed event moments (decorative) -->
       <div class="floats" aria-hidden="true">
@@ -22,7 +34,7 @@ import { links } from '../../data/site.js'
           <FloatBubble emoji="🎟️" title="2 tickets confirmed" meta="Check your SMS for the QR code" />
         </BracketFrame>
         <BracketFrame class="f f--2" delay="-1.5s">
-          <div class="tile">
+          <div class="tile glass">
             <span class="tile__ticket">
               <span class="tile__ticket-notch tile__ticket-notch--l" />
               <span class="tile__ticket-notch tile__ticket-notch--r" />
@@ -34,7 +46,7 @@ import { links } from '../../data/site.js'
           <FloatBubble emoji="✅" title="Checked in: Gate A" meta="VIP · 19:42" tail="bl" />
         </BracketFrame>
         <BracketFrame class="f f--4" delay="-4.2s">
-          <div class="tile tile--qr">
+          <div class="tile tile--qr glass">
             <span class="qr">
               <span v-for="n in 25" :key="n" :class="{ on: [1, 2, 3, 5, 6, 8, 10, 11, 13, 15, 16, 19, 21, 22, 23, 25].includes(n) }" />
             </span>
@@ -89,8 +101,21 @@ import { links } from '../../data/site.js'
 <style scoped>
 .hero {
   position: relative;
+  isolation: isolate;
   padding: 24px var(--gutter) 0;
   margin-top: -88px; /* tuck under the floating header */
+}
+
+/* glow field behind the glass; clipped so nothing causes horizontal scroll */
+.ambient {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  /* fade out under the scroll cue so the glow field has no hard bottom edge */
+  -webkit-mask-image: linear-gradient(#000 calc(100% - 260px), transparent);
+  mask-image: linear-gradient(#000 calc(100% - 260px), transparent);
 }
 
 .shell {
@@ -99,35 +124,44 @@ import { links } from '../../data/site.js'
   margin: 0 auto;
   padding: 196px 24px 140px;
   overflow: hidden;
-  isolation: isolate;
 }
 
 .glow--a {
-  width: 520px;
-  height: 900px;
-  top: -320px;
-  right: 6%;
+  width: 560px;
+  height: 960px;
+  top: -360px;
+  right: 8%;
   background: var(--glow-amber);
-  opacity: 0.42;
+  opacity: 0.62;
   transform: rotate(-35deg);
 }
 
 .glow--b {
-  width: 480px;
-  height: 480px;
-  bottom: -160px;
-  left: 4%;
+  width: 520px;
+  height: 520px;
+  bottom: -120px;
+  left: 2%;
   background: var(--glow-peach);
-  opacity: 0.75;
+  opacity: 0.9;
 }
 
 .glow--c {
-  width: 360px;
-  height: 360px;
-  top: 30%;
-  left: 40%;
+  width: 420px;
+  height: 420px;
+  top: 32%;
+  left: 38%;
   background: var(--glow-cream);
-  opacity: 0.7;
+  opacity: 0.9;
+}
+
+/* cool counter-tint, low and left, so the frost has something to refract */
+.glow--d {
+  width: 420px;
+  height: 380px;
+  top: 40%;
+  left: -6%;
+  background: var(--glow-sky);
+  opacity: 0.25;
 }
 
 .content {
@@ -222,28 +256,52 @@ import { links } from '../../data/site.js'
 }
 
 .tile {
+  /* a glossy glass block: milky fill, warm caustic pooled under the glyph */
+  --glass-fill: radial-gradient(circle at 50% 72%, rgba(255, 197, 11, 0.22), transparent 58%),
+    rgba(255, 255, 255, 0.52);
+  --glass-rim-width: 2px;
   width: 128px;
   height: 128px;
   display: grid;
   place-items: center;
-  background: var(--surface);
-  border: 1px solid var(--border);
   border-radius: var(--r-3xl);
-  box-shadow: var(--shadow-float);
+  box-shadow:
+    var(--glass-highlight),
+    inset 0 2px 2px rgba(255, 255, 255, 0.8),
+    inset 0 -10px 24px -10px rgba(255, 255, 255, 0.7),
+    inset 0 0 24px rgba(255, 255, 255, 0.35),
+    var(--shadow-float);
 }
 
-/* glossy 3D-ish yellow ticket glyph */
+/* glossy, translucent yellow ticket glyph (yellow glass) */
 .tile__ticket {
   position: relative;
   width: 72px;
   height: 46px;
   border-radius: 10px;
-  background: var(--brand-gradient-diag);
+  background: linear-gradient(
+    150deg,
+    rgba(255, 233, 140, 0.95) 0%,
+    rgba(255, 197, 11, 0.86) 48%,
+    rgba(255, 168, 0, 0.94) 100%
+  );
   box-shadow:
-    inset 0 2px 0 rgba(255, 255, 255, 0.65),
-    inset 0 -4px 8px rgba(196, 120, 0, 0.35),
-    0 10px 20px -8px rgba(255, 168, 0, 0.6);
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.9),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.35),
+    inset 0 -6px 10px rgba(214, 128, 0, 0.35),
+    0 14px 24px -10px rgba(255, 168, 0, 0.7);
   transform: rotate(-12deg);
+}
+
+/* specular highlight across the top of the glyph */
+.tile__ticket::after,
+.qr::after {
+  content: '';
+  position: absolute;
+  inset: 2px 4px 52%;
+  border-radius: 8px 8px 40% 40% / 8px 8px 100% 100%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.05));
+  pointer-events: none;
 }
 
 .tile__ticket-notch {
@@ -253,7 +311,9 @@ import { links } from '../../data/site.js'
   height: 14px;
   margin-top: -7px;
   border-radius: 50%;
-  background: var(--surface);
+  /* punched hole: reads as a cut-out through to the milky tile */
+  background: rgba(255, 252, 240, 0.95);
+  box-shadow: inset 0 1px 2px rgba(150, 90, 0, 0.3);
 }
 .tile__ticket-notch--l {
   left: -7px;
@@ -270,20 +330,19 @@ import { links } from '../../data/site.js'
   border-left: 2px dashed rgba(0, 0, 0, 0.25);
 }
 
-.tile--qr {
-  background: var(--surface);
-}
-
 .qr {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(5, 11px);
   gap: 3px;
   padding: 10px;
   border-radius: 14px;
-  background: var(--accent);
+  background: linear-gradient(150deg, rgba(255, 233, 140, 0.95), rgba(255, 197, 11, 0.88) 50%, rgba(255, 168, 0, 0.94));
   box-shadow:
-    inset 0 2px 0 rgba(255, 255, 255, 0.6),
-    0 10px 20px -8px rgba(255, 168, 0, 0.6);
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.9),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.35),
+    inset 0 -6px 10px rgba(214, 128, 0, 0.3),
+    0 14px 24px -10px rgba(255, 168, 0, 0.7);
   transform: rotate(8deg);
 }
 

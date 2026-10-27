@@ -41,7 +41,7 @@ const fmt = (n) => n.toLocaleString('en-US')
       <h2 id="stats-title" class="sr-only">Tukiio in numbers</h2>
       <ul ref="root" class="stats" role="list">
         <li v-for="(s, i) in stats" :key="s.label" v-reveal="i * 100" class="stat-wrap" :class="{ 'is-raised': s.raised }">
-          <div class="stat card">
+          <div class="stat" :class="s.raised ? 'glass' : 'card'">
             <span class="stat__num" aria-hidden="true">{{ fmt(shown[i]) }}{{ s.suffix }}</span>
             <span class="sr-only">{{ fmt(s.to) }}{{ s.suffix }}</span>
             <span class="stat__label">{{ s.label }}</span>
@@ -77,14 +77,40 @@ const fmt = (n) => n.toLocaleString('en-US')
   transform: translateY(-20px);
 }
 
-/* the gradient lip under the raised card */
+/* colour behind the raised glass card: a warm glow field that bleeds past it */
+.stat-wrap.is-raised::before {
+  content: '';
+  position: absolute;
+  inset: -36px -12px -24px;
+  z-index: 0;
+  border-radius: 48px;
+  background:
+    radial-gradient(closest-side at 30% 70%, rgba(255, 197, 11, 0.55), transparent),
+    radial-gradient(closest-side at 50% 50%, rgba(255, 226, 122, 0.45), transparent);
+  pointer-events: none;
+}
+
+/* the gradient lip under the raised card (shows below it and glows up through the glass) */
 .stat-wrap.is-raised::after {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: 25% 0 0;
   border-radius: var(--r-4xl);
   background: var(--brand-gradient);
+  -webkit-mask-image: linear-gradient(transparent, rgba(0, 0, 0, 0.55) 55%, #000 92%);
+  mask-image: linear-gradient(transparent, rgba(0, 0, 0, 0.55) 55%, #000 92%);
   z-index: 0;
+}
+
+/* raised card = liquid glass; fill thick enough that muted copy keeps AA over the yellow lip */
+.stat.glass {
+  --glass-fill: rgba(255, 255, 255, 0.72);
+  --glass-rim-width: 2px;
+  box-shadow:
+    var(--glass-highlight),
+    inset 0 2px 1px rgba(255, 255, 255, 0.7),
+    inset 0 0 40px rgba(255, 255, 255, 0.35),
+    var(--shadow-float);
 }
 
 .stat {

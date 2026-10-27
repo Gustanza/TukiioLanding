@@ -109,3 +109,62 @@ export function useInView(elRef, threshold = 0.2) {
   onBeforeUnmount(() => io?.disconnect())
   return inView
 }
+
+/**
+ * Liquid-glass pointer light: translates the sheet's `.glass-light` child toward
+ * the pointer (transform only, so it stays on the compositor). Fine pointers only,
+ * off under reduced motion. One rect read + one transform write per rAF.
+ */
+export function useGlassPointer(elRef) {
+  let raf = 0
+  let cx = 0
+  let cy = 0
+  let active = false
+  let light = null
+  const apply = () => {
+    raf = 0
+    const el = elRef.value
+    if (!el || !light) return
+    if (!active) {
+      light.style.transform = ''
+      return
+    }
+    const r = el.getBoundingClientRect()
+    // offset from the light's rest anchor (left: 26%, top: 0)
+    const tx = Math.round(cx - r.left - r.width * 0.26)
+    const ty = Math.round(cy - r.top)
+    light.style.transform = `translate3d(${tx}px, ${ty}px, 0)`
+  }
+  const schedule = () => {
+    if (!raf) raf = requestAnimationFrame(apply)
+  }
+  const onMove = (e) => {
+    cx = e.clientX
+    cy = e.clientY
+    active = true
+    schedule()
+  }
+  const onLeave = () => {
+    active = false
+    schedule()
+  }
+  let enabled = false
+  onMounted(() => {
+    const el = elRef.value
+    if (!el || prefersReducedMotion()) return
+    if (!window.matchMedia?.('(hover: hover) and (pointer: fine)').matches) return
+    light = el.querySelector(':scope > .glass-light')
+    if (!light) return
+    enabled = true
+    el.addEventListener('pointermove', onMove, { passive: true })
+    el.addEventListener('pointerleave', onLeave, { passive: true })
+  })
+  onBeforeUnmount(() => {
+    const el = elRef.value
+    if (enabled && el) {
+      el.removeEventListener('pointermove', onMove)
+      el.removeEventListener('pointerleave', onLeave)
+    }
+    if (raf) cancelAnimationFrame(raf)
+  })
+}

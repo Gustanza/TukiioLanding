@@ -40,6 +40,36 @@
   --glow-amber: #ffc50b;
   --glow-peach: #ffd2a8;
   --glow-cream: #fff1b8;
+  --glow-sky: #a9e4ff; /* cool counter-tint: lets glass refraction read; keep small */
+
+  /* Liquid glass (see DESIGN.md Part 4). Fill + blur/saturate + specular rim + inner light. */
+  --glass-bg: rgba(255, 255, 255, 0.44); /* big sheets (hero/CTA shell) */
+  --glass-bg-thick: rgba(255, 255, 255, 0.64); /* small text-bearing glass (bubbles, pills, header) */
+  --glass-fallback: rgba(255, 255, 255, 0.9); /* no backdrop-filter support */
+  --glass-blur: 20px;
+  --glass-saturate: 180%;
+  --glass-border: rgba(255, 255, 255, 0.55);
+  --glass-rim-width: 1.5px;
+  --glass-rim: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0.75) 16%,
+    rgba(255, 255, 255, 0.14) 40%,
+    rgba(255, 255, 255, 0.06) 62%,
+    rgba(255, 255, 255, 0.6) 100%
+  );
+  --glass-sheen: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(255, 255, 255, 0.12) 30%,
+    rgba(255, 255, 255, 0) 52%,
+    rgba(255, 255, 255, 0.06) 78%,
+    rgba(255, 255, 255, 0.22) 100%
+  );
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.95), inset 0 -1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 0 0 1px var(--glass-border);
+  --glass-inner-glow: inset 0 0 40px rgba(255, 255, 255, 0.28);
+  --glass-shadow: 0 1px 2px rgba(40, 32, 10, 0.04), 0 18px 48px -18px rgba(40, 32, 10, 0.16);
 
   /* Status */
   --online: #16a34a;
@@ -260,12 +290,88 @@ button {
   box-shadow: var(--shadow-hairline);
 }
 
+/* ---------- Liquid glass ----------
+   .glass           base surface: translucent fill + sheen, backdrop blur/saturate,
+                    specular rim (::before), inner highlight, soft outer shadow.
+   .glass--sheet    the big hero/CTA shells: 40px radius, 2px rim, inner luminance.
+                    Backdrop is saturate-only: only already-blurred glows sit behind
+                    a sheet, so a second blur is invisible but costs a full-size pass.
+   .glass-light     optional first child of a sheet: the specular light pool. Moved by
+                    useGlassPointer() with transform only (compositor), never repainted.
+   .glass--static   same look, no backdrop-filter (big/animated surfaces over flat bg).
+   Per-instance knobs: --glass-fill (colour or gradient), --glass-shadow, --glass-rim.
+   Glass inside a sheet skips its own backdrop-filter: the sheet is already the
+   backdrop root, so a nested blur costs GPU time for no visible change. */
 .glass {
-  background: var(--surface-glass);
-  -webkit-backdrop-filter: blur(16px);
-  backdrop-filter: blur(16px);
-  border: 2px solid #fff;
+  position: relative;
+  isolation: isolate;
+  background: var(--glass-sheen), var(--glass-fill, var(--glass-bg-thick));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  box-shadow: var(--glass-highlight), var(--glass-shadow);
+}
+
+@supports (mask-composite: exclude) or (-webkit-mask-composite: xor) {
+  .glass::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    border-radius: inherit;
+    padding: var(--glass-rim-width);
+    background: var(--glass-rim);
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
+
+.glass--sheet {
+  --glass-fill: var(--glass-bg);
+  --glass-rim-width: 2px;
   border-radius: var(--r-4xl);
+  -webkit-backdrop-filter: saturate(var(--glass-saturate));
+  backdrop-filter: saturate(var(--glass-saturate));
+  box-shadow:
+    var(--glass-highlight),
+    inset 0 2px 1px rgba(255, 255, 255, 0.7),
+    inset 0 -2px 8px rgba(255, 255, 255, 0.3),
+    inset 0 0 80px rgba(255, 255, 255, 0.3),
+    0 30px 80px -40px rgba(40, 32, 10, 0.18);
+}
+
+/* Specular light pool: rests at 26% / 0 of the sheet; JS translates it toward the pointer. */
+.glass-light {
+  position: absolute;
+  left: 26%;
+  top: 0;
+  z-index: 0;
+  width: 800px;
+  height: 800px;
+  margin: -400px 0 0 -400px;
+  border-radius: 50%;
+  background: radial-gradient(640px circle at center, rgba(255, 255, 255, 0.42), transparent 397px);
+  pointer-events: none;
+  transition: transform 0.7s var(--ease-out);
+}
+
+.glass--static,
+.glass--sheet .glass {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* Fallback: no backdrop blur means no frost, so go near-opaque for legibility. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass:not(.glass--tint) {
+    background-color: var(--glass-fallback) !important;
+  }
 }
 
 /* The "card in a slot" tray */
